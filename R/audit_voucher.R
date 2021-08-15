@@ -193,6 +193,31 @@ FCostItemNumber_all ='",FCostItemNumber,"' and FCostCenterNo='",FCostCenterNo,"'
   return(res)
 }
 
+#' 凭证号查询重分类凭证
+#'
+#' @param conn 连接
+#' @param FYear 年份
+#' @param FPeriod 月份
+#' @param FVchNo 凭证叼
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' voucher_afterReClass_vchNo_list()
+voucher_afterReClass_vchNo_list <- function(conn=tsda::conn_rds('jlrds'),
+                                                      FYear = 2021,
+                                                      FPeriod =6,
+                                            FVchNo = '4901907219'
+) {
+  sql <- paste0("select * from rds_t_mrpt_data_sap_withReClassified
+where  year(FPostDate)*100+MONTH(FPostDate) =  ",FYear*100+FPeriod," and
+FVchNo ='",FVchNo,"'")
+  res <- tsda::sql_select(conn,sql)
+  return(res)
+}
+
+
 #' 凭证重分类后按月查询凭证展开到科目+成本中心
 #'
 #' @param conn 连接
