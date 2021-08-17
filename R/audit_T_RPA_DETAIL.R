@@ -99,3 +99,36 @@ audit_detail_fromDS1_BW <- function(conn=tsda::conn_rds('jlrds'),
   return(res)
 
 }
+
+
+
+
+#' 管理报表反查数据源所有过程表
+#'
+#' @param conn 连接
+#' @param FYear 年份
+#' @param FPeriod 期间
+#' @param FBrand 品牌
+#' @param FChannel 渠道
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' audit_detail_All()
+audit_detail_All <- function(conn=tsda::conn_rds('jlrds'),
+                                    FYear = 2021,
+                                    FPeriod =6,
+                                    FBrand = '自然堂',
+                                    FChannel = '商超'
+
+) {
+
+  sql <- paste0("
+ select * from  T_DETAILFI_RPA
+ where FYear = ",FYear," and FPeriod = ",FPeriod," and FBrand = '",FBrand,"' and FChannel = '",FChannel,"'
+                 order by FRptItemNumber ")
+  res <- tsda::sql_select(conn,sql)
+  return(res)
+
+}
