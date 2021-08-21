@@ -41,8 +41,15 @@ audit_fi_rpa_rpt <- function(conn=tsda::conn_rds('jlrds'),
                              FChannel = '电商'
                              ) {
 
-  sql <- paste0("select FBrand,FChannel,FRptItemNumber,FRptItemName,FAcualAmt
-from  T_FI_RPA
+  sql <- paste0("SELECT
+      [FBrand]
+      ,[FChannel]
+      ,[FRptItemNumber]
+      ,[FRptItemName]
+      ,[FAmt_Manual]
+      ,[FAmt_RPA]
+      ,[FAmt_Diff]
+  FROM [dbo].[rds_vw_T_FI_RPA]
 where FYear = ",FYear," and FPeriod = ",FPeriod," and FBrand = '",FBrand,"' and FChannel = '",FChannel,"'
 order by FBrand,FChannel,FRptItemNumber")
   res <- tsda::sql_select(conn,sql)
