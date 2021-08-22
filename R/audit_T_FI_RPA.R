@@ -49,6 +49,8 @@ audit_fi_rpa_rpt <- function(conn=tsda::conn_rds('jlrds'),
       ,[FAmt_Manual]
       ,[FAmt_RPA]
       ,[FAmt_Diff]
+      ,FRptAmt_orginal
+      ,fremark
   FROM [dbo].[rds_vw_T_FI_RPA]
 where FYear = ",FYear," and FPeriod = ",FPeriod," and FBrand = '",FBrand,"' and FChannel = '",FChannel,"'
 order by FBrand,FChannel,FRptItemNumber")
