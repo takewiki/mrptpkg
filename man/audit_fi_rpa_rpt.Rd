@@ -9,7 +9,9 @@ audit_fi_rpa_rpt(
   FYear = 2021,
   FPeriod = 6,
   FBrand = "美素",
-  FChannel = "电商"
+  FChannel = "电商",
+  FOnlyError = FALSE,
+  FErrorValue = 0.1
 )
 }
 \arguments{
@@ -22,6 +24,10 @@ audit_fi_rpa_rpt(
 \item{FBrand}{品牌}
 
 \item{FChannel}{渠道}
+
+\item{FOnlyError}{是否只显示差异}
+
+\item{FErrorValue}{允许的差异值，针对差异取绝对值}
 }
 \value{
 返回值
