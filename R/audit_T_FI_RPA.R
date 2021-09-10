@@ -52,15 +52,18 @@ audit_fi_rpa_rpt <- function(conn=tsda::conn_rds('jlrds'),
     sql <- paste0("SELECT
       [FBrand]
       ,[FChannel]
-      ,[FRptItemNumber]
-      ,[FRptItemName]
+      ,a.[FRptItemNumber]
+      ,a.[FRptItemName]
       ,[FAmt_Manual]
       ,[FAmt_RPA]
       ,[FAmt_Diff]
       ,FRptAmt_orginal
       ,fremark
-  FROM [dbo].[rds_vw_T_FI_RPA]
+  FROM [dbo].[rds_vw_T_FI_RPA] a
+  inner join t_mrpt_rptItem b
+  on a.FRptItemNumber = b.FRptItemNumber
 where FYear = ",FYear," and FPeriod = ",FPeriod," and FBrand = '",FBrand,"' and FChannel = '",FChannel,"'
+and  b.FDetail = 1
 and abs(FAmt_Diff) >= ",FErrorValue,"
 order by FBrand,FChannel,FRptItemNumber")
 
