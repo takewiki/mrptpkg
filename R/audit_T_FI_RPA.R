@@ -28,6 +28,8 @@ order by FBrand,FChannel")
 #' @param FPeriod 期间
 #' @param FBrand 品牌
 #' @param FChannel 渠道
+#' @param FOnlyError 是否只显示差异
+#' @param FErrorValue 允许的差异值，针对差异取绝对值
 #'
 #' @return 返回值
 #' @export
@@ -37,11 +39,34 @@ order by FBrand,FChannel")
 audit_fi_rpa_rpt <- function(conn=tsda::conn_rds('jlrds'),
                                       FYear = 2021,
                                       FPeriod =6,
+
+
                              FBrand = '美素',
-                             FChannel = '电商'
+                             FChannel = '电商',
+                             FOnlyError = FALSE,
+                             FErrorValue = 0.1
                              ) {
 
-  sql <- paste0("SELECT
+  if( FOnlyError){
+    #只显示差异部分
+    sql <- paste0("SELECT
+      [FBrand]
+      ,[FChannel]
+      ,[FRptItemNumber]
+      ,[FRptItemName]
+      ,[FAmt_Manual]
+      ,[FAmt_RPA]
+      ,[FAmt_Diff]
+      ,FRptAmt_orginal
+      ,fremark
+  FROM [dbo].[rds_vw_T_FI_RPA]
+where FYear = ",FYear," and FPeriod = ",FPeriod," and FBrand = '",FBrand,"' and FChannel = '",FChannel,"'
+and abs(FAmt_Diff) >= ",FErrorValue,"
+order by FBrand,FChannel,FRptItemNumber")
+
+  }else{
+    #显示全部
+    sql <- paste0("SELECT
       [FBrand]
       ,[FChannel]
       ,[FRptItemNumber]
@@ -54,6 +79,11 @@ audit_fi_rpa_rpt <- function(conn=tsda::conn_rds('jlrds'),
   FROM [dbo].[rds_vw_T_FI_RPA]
 where FYear = ",FYear," and FPeriod = ",FPeriod," and FBrand = '",FBrand,"' and FChannel = '",FChannel,"'
 order by FBrand,FChannel,FRptItemNumber")
+
+  }
+
+
+
   res <- tsda::sql_select(conn,sql)
   return(res)
 
