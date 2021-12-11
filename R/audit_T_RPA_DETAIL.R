@@ -37,6 +37,79 @@ return(res)
 
 
 
+#' 针对SAP数据源反向查询到相关的成本要素
+#'
+#' @param conn 连接
+#' @param FYear 年份
+#' @param FPeriod 月份
+#' @param FBrand  品牌
+#' @param FChannel 渠道
+#' @param FRptItemNumber  报表项目代码
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' traceBack_SAP_CostElement()
+traceBack_SAP_CostElement <- function(conn=tsda::conn_rds('jlrds'),
+                                     FYear = 2021,
+                                     FPeriod =6,
+                                     FBrand = '美素',
+                                     FChannel = '电商',
+                                     FRptItemNumber = 'I17'
+) {
+  sql <- paste0(" select  FcostItemNumber,FCostItemName,FFeeName  ,FAllocAmt
+ from mrpt2_vw_trace_sap_sumup_costElement
+ where FYear = ",FYear," and FPeriod = ",FPeriod," and FBrand = '",FBrand,"' and FChannel = '",FChannel,"' and FRptItemNumber='",FRptItemNumber,"'")
+
+  res <- tsda::sql_select(conn,sql)
+  return(res)
+
+}
+
+
+#' 针对SAP数据源反向查询到相关的成本要素
+#'
+#' @param conn 连接
+#' @param FYear 年份
+#' @param FPeriod 月份
+#' @param FBrand  品牌
+#' @param FChannel 渠道
+#' @param FRptItemNumber  报表项目代码
+#' @param FCostItemNumber 成本要素代码
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' traceBack_SAP_CostElement()
+traceBack_SAP_CostElement_CostCenter <- function(conn=tsda::conn_rds('jlrds'),
+                                      FYear = 2021,
+                                      FPeriod =6,
+                                      FBrand = '美素',
+                                      FChannel = '电商',
+                                      FRptItemNumber = 'I17',
+                                      FCostItemNumber ='8011050101'
+) {
+  sql <- paste0("   select  FCostItemNumber,FCostCenterNumber,FAllocAmt
+ from  mrpt2_vw_trace_sap_sumup_costElement_costCenter
+ where FYear = ",FYear," and FPeriod = ",FPeriod," and FBrand = '",FBrand,"' and FChannel = '",FChannel,"' and FRptItemNumber='",FRptItemNumber,"'
+                and FCostItemNumber='",FCostItemNumber,"' ")
+
+  res <- tsda::sql_select(conn,sql)
+  return(res)
+
+}
+
+
+
+
+
+
+
+
+
+
 #' 管理报表反查数据源手调凭证
 #'
 #' @param conn 连接
