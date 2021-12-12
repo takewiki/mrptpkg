@@ -60,7 +60,7 @@ audit_fi_rpa_rpt <- function(conn=tsda::conn_rds('jlrds'),
       ,FRptAmt_orginal
       ,fremark,
       a.FTotalAmt_SAP,a.FTotalAmt_BW,a.FTotalAmt_ADJ,a.FTotalAmt_Top2,a.FTotalAmt_Top3
-  FROM [dbo].[rds_vw_T_FI_RPA2] a
+  FROM [dbo].[t_mrpt_diff_all] a
   inner join t_mrpt_rptItem b
   on a.FRptItemNumber = b.FRptItemNumber
 where FYear = ",FYear," and FPeriod = ",FPeriod," and FBrand = '",FBrand,"' and FChannel = '",FChannel,"'
@@ -81,7 +81,7 @@ order by FBrand,FChannel,FRptItemNumber")
       ,FRptAmt_orginal
       ,fremark,
       FTotalAmt_SAP,FTotalAmt_BW,FTotalAmt_ADJ,FTotalAmt_Top2,FTotalAmt_Top3
-  FROM [dbo].[rds_vw_T_FI_RPA2]
+  FROM [dbo].[t_mrpt_diff_all]
 where FYear = ",FYear," and FPeriod = ",FPeriod," and FBrand = '",FBrand,"' and FChannel = '",FChannel,"'
 order by FBrand,FChannel,FRptItemNumber")
 
